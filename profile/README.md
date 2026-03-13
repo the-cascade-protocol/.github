@@ -2,7 +2,7 @@
 
 **A developer-first framework for structured, patient-owned health data.**
 
-Cascade Protocol provides semantic vocabularies, serialization formats, and developer tools for building health applications where patients own and control their data. All processing is local-first -- no data leaves the user's machine.
+Cascade Protocol provides semantic vocabularies, serialization formats, and developer tools for building health applications where patients own and control their data. All processing is local-first — no data leaves the user's machine.
 
 ## Repositories
 
@@ -10,22 +10,25 @@ Cascade Protocol provides semantic vocabularies, serialization formats, and deve
 |---|---|---|
 | [spec](https://github.com/the-cascade-protocol/spec) | Ontology files, SHACL shapes, serialization specification, JSON-LD context | Stable |
 | [conformance](https://github.com/the-cascade-protocol/conformance) | Conformance test fixtures, reference Patient Pod | Stable |
-| [cli](https://github.com/the-cascade-protocol/cli) | `cascade-cli` -- validate, convert, query, and manage health data | v0.2.0 |
-| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK (`@cascade-protocol/sdk`) | v1.0.0 |
+| [cascade-cli](https://github.com/the-cascade-protocol/cascade-cli) | CLI for validating, converting, querying, and managing health data Pods | v0.3.1 |
+| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK (`@the-cascade-protocol/sdk`) | v1.0.0 |
+| [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | Python SDK (`cascade-protocol`) | v1.0.1 |
+| [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | Natural language interface for the Cascade Protocol CLI | Early access |
 
 ## Quick Start
 
 ```bash
 # Install the CLI
-npm install -g @cascade-protocol/cli
+npm install -g @the-cascade-protocol/cli
 
-# Initialize a Pod with reference data
-cascade pod init --template reference ./my-pod
+# Import FHIR data into a Pod
+cascade pod init ./my-pod
+cascade pod import ./my-pod patient.json
 
-# Query medications
-cascade pod query ./my-pod --medications
+# Query by data type
+cascade pod query ./my-pod --medications --conditions --lab-results
 
-# Validate data
+# Validate against the Cascade spec
 cascade validate ./my-pod
 ```
 
@@ -33,15 +36,15 @@ cascade validate ./my-pod
 
 - **Local-first**: Zero network calls during operation. All data stays on your machine.
 - **Patient-owned**: Data stored in portable Pods that users control.
-- **Provenance-tracked**: Every record carries its origin -- clinical, device, self-reported, or AI-generated.
+- **Provenance-tracked**: Every record carries its origin — clinical, device, self-reported, or AI-generated.
 - **Semantic**: Built on RDF/OWL with W3C PROV-O provenance. SPARQL-ready knowledge graphs.
 - **Open**: Apache 2.0 (code) / CC-BY 4.0 (specifications). No proprietary dependencies.
 
 ## Links
 
-- [cascadeprotocol.org](https://cascadeprotocol.org) -- Documentation & playground
-- [Security & Compliance Guide](https://cascadeprotocol.org/docs/security/)
-- [Getting Started (TypeScript)](https://cascadeprotocol.org/docs/getting-started/typescript/)
+- [cascadeprotocol.org](https://cascadeprotocol.org) — Documentation & getting started guides
+- [CLI Guide](https://cascadeprotocol.org/docs/getting-started/cli/)
+- [Security & Compliance](https://cascadeprotocol.org/docs/security/)
 
 ## License
 
