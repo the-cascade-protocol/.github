@@ -11,7 +11,7 @@ Cascade Protocol provides semantic vocabularies, serialization formats, and deve
 | [spec](https://github.com/the-cascade-protocol/spec) | Ontology files, SHACL shapes, serialization specification, JSON-LD context | Stable |
 | [conformance](https://github.com/the-cascade-protocol/conformance) | Conformance test fixtures, reference Patient Pod | Stable |
 | [cascade-cli](https://github.com/the-cascade-protocol/cascade-cli) | CLI for validating, converting, querying, and managing health data Pods | v0.3.1 |
-| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK (`@the-cascade-protocol/sdk`) | v1.0.0 |
+| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK (`@the-cascade-protocol/sdk`) | v1.1.0 |
 | [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | Python SDK (`cascade-protocol`) | v1.0.1 |
 | [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | Natural language interface for the Cascade Protocol CLI | Early access |
 
