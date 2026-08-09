@@ -14,6 +14,7 @@ Cascade Protocol provides semantic vocabularies, serialization formats, and deve
 | [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK (`@the-cascade-protocol/sdk`) | v1.1.0 |
 | [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | Python SDK (`cascade-protocol`) | v1.0.1 |
 | [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | Natural language interface for the Cascade Protocol CLI | v0.1.7 |
+| [cascade-knowledge](https://github.com/the-cascade-protocol/cascade-knowledge) | Open clinical knowledge crosswalk: provenance-per-row mappings that turn isolated codes into meaning | In development |
 
 ## Quick Start
 
