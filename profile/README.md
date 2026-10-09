@@ -1,6 +1,6 @@
 # Cascade Protocol
 
-**A developer-first framework for structured, patient-owned health data.**
+**An open standard and open-source toolkit for structured, patient-owned health data.**
 
 Cascade Protocol provides semantic vocabularies, serialization formats, and developer tools for building health applications where patients own and control their data. All processing is local-first — no data leaves the user's machine.
 
@@ -73,3 +73,7 @@ itself. Please do not include real patient data in either.
 
 Code repositories: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 Specification & documentation: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+## Trademarks
+
+"Cascade Protocol" and the Cascade Protocol logo are trademarks of Cascade Agentic Labs LLC; the licenses above cover the code and the specification, not the name or logo. See the [trademark policy](https://cascadeprotocol.org/legal/trademarks.html) for how to refer to the protocol and what compatibility claims require.
