@@ -4,8 +4,7 @@
 
 Please report a vulnerability privately, not in a public issue or pull request.
 
-- Email contact@cascadeprotocol.org with the repository, what you found and how to reproduce it.
-- Where a repository has GitHub private vulnerability reporting switched on, you can instead open its **Security** tab and choose **Report a vulnerability**.
+Email contact@cascadeprotocol.org with the repository, what you found and how to reproduce it.
 
 Never include real patient data in a report.
 

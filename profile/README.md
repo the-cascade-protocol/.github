@@ -4,7 +4,7 @@
 
 Each person's records live in their own pod: a single-tenant RDF graph, kept as Turtle files. Records arrive from each source format through a **Cascade Bridge** running an **adapter**, so every app reads the same records and asks them the same standard SPARQL questions. Pods can be encrypted, though the format is still being hardened after an outside review and is not yet claimed to be safe ([#733](https://github.com/jayostis/cascade-runtime-js/issues/733), [#321](https://github.com/jayostis/cascade-runtime-js/issues/321)). It is built on RDF/Turtle, SPARQL 1.1, SHACL, RO-Crate and EARL.
 
-> **Status: draft.** The Bridge's namespace is `v1-draft` and the vocabulary is a draft, and no compatibility is promised before a numbered v1. No claim is made that anything here is fit for clinical use. None of the current repositories is published to npm yet ([jayostis/cascade-runtime-js#310](https://github.com/jayostis/cascade-runtime-js/issues/310)): an app is made from a build on a GitHub release, and the rest is used from a clone.
+> **Status: draft.** Cascade is a draft: the Bridge's namespace is `v1-draft`, and no compatibility is promised before a numbered v1. No claim is made that anything here is fit for clinical use. None of the current repositories is published to npm yet ([jayostis/cascade-runtime-js#310](https://github.com/jayostis/cascade-runtime-js/issues/310)): the starter kit's command makes an app from a release build, the Rust Bridge is a release build, the sandbox is a git dependency pinned by commit, and the rest is used from a clone.
 
 ## Start here
 
@@ -89,9 +89,9 @@ Pull requests that change two repositories land as a pair, linked by `Depends-On
 
 Terms have IRIs under `https://ns.cascadeprotocol.org/`: the vocabulary's under `cascade#`, the Bridge's under `bridge/v1-draft#`. These draft namespaces are not served yet; read the terms in [cascade-vocabulary's ontologies](https://github.com/jayostis/cascade-vocabulary/tree/main/ontologies) and [cascade-bridge-spec's vocab](https://github.com/jayostis/cascade-bridge-spec/tree/main/vocab).
 
-## Deprecated
+## Earlier prototypes
 
-These were the protocol's first prototypes. They are no longer developed and are kept for reference.
+These were the protocol's first prototypes. The repositories above replace them as the current stack; these are not kept in step with it. They stay public.
 
 | Repository | Was | Replaced by |
 |---|---|---|
@@ -101,6 +101,7 @@ These were the protocol's first prototypes. They are no longer developed and are
 | [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | A TypeScript SDK, `@the-cascade-protocol/sdk` | cascade-runtime-js |
 | [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | A Python SDK, `cascade-protocol` on PyPI | none yet |
 | [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | A natural-language interface to the old CLI, `@the-cascade-protocol/agent` | the chat and MCP add-ons of cascade-starter-kit |
+| [cascade-knowledge](https://github.com/the-cascade-protocol/cascade-knowledge) | An open clinical knowledge crosswalk: code mappings with provenance for each row | not part of the current stack |
 
 ## Licence and trademarks
 
