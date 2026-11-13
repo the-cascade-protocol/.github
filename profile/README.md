@@ -1,79 +1,109 @@
 # Cascade Protocol
 
-**An open standard and open-source toolkit for structured, patient-owned health data.**
+**An open standard for health apps that put patients in control of their own data.**
 
-Cascade Protocol provides semantic vocabularies, serialization formats, and developer tools for building health applications where patients own and control their data. All processing is local-first — no data leaves the user's machine.
+Each person's records live in their own pod: a single-tenant RDF graph, kept as Turtle files. Records arrive from each source format through a **Cascade Bridge** running an **adapter**, so every app reads the same records and asks them the same standard SPARQL questions. Pods can be encrypted, though the format is still being hardened after an outside review and is not yet claimed to be safe ([#733](https://github.com/jayostis/cascade-runtime-js/issues/733), [#321](https://github.com/jayostis/cascade-runtime-js/issues/321)). It is built on RDF/Turtle, SPARQL 1.1, SHACL, RO-Crate and EARL.
+
+> **Status: draft.** The Bridge's namespace is `v1-draft` and the vocabulary is a draft, and no compatibility is promised before a numbered v1. No claim is made that anything here is fit for clinical use. None of the current repositories is published to npm yet ([jayostis/cascade-runtime-js#310](https://github.com/jayostis/cascade-runtime-js/issues/310)): an app is made from a build on a GitHub release, and the rest is used from a clone.
+
+## Start here
+
+**Build an app.** [Try a pod in your browser](https://jayostis.github.io/cascade-starter-kit/try/), then follow the [quick start](https://jayostis.github.io/cascade-runtime-js/start.html): one command makes an app from [cascade-starter-kit](https://github.com/jayostis/cascade-starter-kit), and a coding agent builds your idea on it. The [API](https://jayostis.github.io/cascade-runtime-js/api/) is on the hub too.
+
+**See a pod from the inside.** Open [Alex Rivera's pod](https://jayostis.github.io/cascade-runtime-js/alex-rivera/) in the pod explorer: its files, how they are laid out and how a view is built. The hub lists [all four example pods](https://jayostis.github.io/cascade-runtime-js/examples.html).
+
+**Write an adapter for a new source format.** Start at [cascade-bridge-spec/adapter](https://github.com/jayostis/cascade-bridge-spec/tree/main/adapter).
+
+**Write a runtime, or a Bridge in another language.** Start at [cascade-vocabulary/runtime](https://github.com/jayostis/cascade-vocabulary/tree/main/runtime) for a runtime, or [cascade-bridge-spec/engine](https://github.com/jayostis/cascade-bridge-spec/tree/main/engine) for a Bridge.
+
+Not sure where to go? [The Cascade hub](https://jayostis.github.io/cascade-runtime-js/) says where to find each thing.
+
+## How it fits together
+
+```mermaid
+flowchart LR
+  doc["A source document"] --> bridge["A Bridge running an adapter"]
+  bridge --> records["Records"]
+  records --> runtime["A runtime"]
+  runtime --> pod["A pod"]
+  pod --> app["An app, asking SPARQL questions"]
+```
 
 ## Repositories
 
-| Repository | Description | Released as |
-|---|---|---|
-| [spec](https://github.com/the-cascade-protocol/spec) | Ontology files, SHACL shapes, serialization specification, JSON-LD context | Versioned per vocabulary — see [`VOCAB_VERSIONS`](https://github.com/the-cascade-protocol/spec/blob/main/VOCAB_VERSIONS) |
-| [conformance](https://github.com/the-cascade-protocol/conformance) | Conformance test fixtures, reference Patient Pod | Tagged releases |
-| [cascade-cli](https://github.com/the-cascade-protocol/cascade-cli) | CLI for validating, converting, querying, and managing health data Pods | [`@the-cascade-protocol/cli`](https://www.npmjs.com/package/@the-cascade-protocol/cli) on npm |
-| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | TypeScript SDK | [`@the-cascade-protocol/sdk`](https://www.npmjs.com/package/@the-cascade-protocol/sdk) on npm |
-| [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | Python SDK | [`cascade-protocol`](https://pypi.org/project/cascade-protocol/) on PyPI |
-| [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | Natural language interface for the Cascade Protocol CLI | [`@the-cascade-protocol/agent`](https://www.npmjs.com/package/@the-cascade-protocol/agent) on npm |
-| [cascade-knowledge](https://github.com/the-cascade-protocol/cascade-knowledge) | Open clinical knowledge crosswalk: provenance-per-row mappings that turn isolated codes into meaning | In development |
+### Contract: what everything is checked against
 
-Versions live in the package registries rather than in this table. This page is not
-where anyone should learn a version, and a number written here goes stale the next
-time anything ships. Four of the six had, one of them by sixteen minor releases.
+| Repository | What it is |
+|---|---|
+| [cascade-vocabulary](https://github.com/jayostis/cascade-vocabulary) | The contract a pod is built and read by: ontologies and SHACL shapes, the standard SPARQL queries, the runtime rules as Gherkin feature files, and the conformance kits. |
+| [cascade-bridge-spec](https://github.com/jayostis/cascade-bridge-spec) | The Cascade Bridge Specification: the contract every adapter and every Bridge follows, and the tooling that tests them against each other. |
 
-## Quick Start
+### Engine
 
-```bash
-# Install the CLI
-npm install -g @the-cascade-protocol/cli
+| Repository | What it is |
+|---|---|
+| [cascade-bridge-rs](https://github.com/jayostis/cascade-bridge-rs) | The Cascade Bridge in Rust, also built for WebAssembly. It runs an adapter and its test manifest. It is the only engine that runs adapters today. |
 
-# Import FHIR data into a Pod
-cascade pod init ./my-pod
-cascade pod import ./my-pod patient.json
+### Adapters: data, no code
 
-# Query by data type
-cascade pod query ./my-pod --medications --conditions --lab-results
+| Repository | What it is |
+|---|---|
+| [cascade-bridge-adapter-fhir-r4](https://github.com/jayostis/cascade-bridge-adapter-fhir-r4) | FHIR R4 JSON into Cascade records. |
+| [cascade-bridge-adapter-ccda](https://github.com/jayostis/cascade-bridge-adapter-ccda) | C-CDA R2.1 XML, as a patient portal hands it out, into Cascade records. |
 
-# Validate against the Cascade spec
-cascade validate ./my-pod
-```
+### Data
 
-## Key Principles
+| Repository | What it is |
+|---|---|
+| [cascade-reference-tables](https://github.com/jayostis/cascade-reference-tables) | Reference tables kept current from open publishers: the contract a table builder follows, the builders, and the feed apps read. ([Its site](https://jayostis.github.io/cascade-reference-tables/).) |
 
-- **Local-first**: Zero network calls during operation. All data stays on your machine.
-- **Patient-owned**: Data stored in portable Pods that users control.
-- **Provenance-tracked**: Every record carries its origin — clinical, device, self-reported, or AI-generated.
-- **Semantic**: Built on RDF/OWL with W3C PROV-O provenance. SPARQL-ready knowledge graphs.
-- **Open**: Apache 2.0 (code) / CC-BY 4.0 (specifications). No proprietary dependencies.
+### Runtime and apps
+
+| Repository | What it is |
+|---|---|
+| [cascade-runtime-js](https://github.com/jayostis/cascade-runtime-js) | The reference runtime, in TypeScript. It files what arrives into a pod and answers questions from it, in Node or entirely in a browser. It proves itself against the vocabulary's conformance kits. |
+| [cascade-starter-kit](https://github.com/jayostis/cascade-starter-kit) | The app a person starts from on the runtime: the template, the same app in a browser, and the command that makes one. |
+| [cascade-sandbox](https://github.com/jayostis/cascade-sandbox) | A pretend health system with a past: demo FHIR hospitals that answer as of a date, for testing patient-facing apps. |
+
+## Conformance
+
+Conformance is executable:
+
+- A runtime runs every example of the vocabulary's feature files and its conformance kits, and reports each one in EARL. The [latest result](https://jayostis.github.io/cascade-runtime-js/conformance/) is on the hub.
+- A Bridge runs every adapter's test manifest.
+- The vocabulary, the runtime, the Bridge and each adapter has a `compatibility.json` naming what it must pass with.
+
+Pull requests that change two repositories land as a pair, linked by `Depends-On:` lines ([compatibility.md](https://github.com/jayostis/cascade-bridge-spec/blob/main/compatibility.md)).
 
 ## Contributing
 
-Contributions are welcome, and the work is tracked in the open.
+- **[All open issues](https://github.com/search?q=repo%3Ajayostis%2Fcascade-vocabulary+repo%3Ajayostis%2Fcascade-bridge-spec+repo%3Ajayostis%2Fcascade-bridge-rs+repo%3Ajayostis%2Fcascade-bridge-adapter-fhir-r4+repo%3Ajayostis%2Fcascade-bridge-adapter-ccda+repo%3Ajayostis%2Fcascade-reference-tables+repo%3Ajayostis%2Fcascade-runtime-js+repo%3Ajayostis%2Fcascade-starter-kit+repo%3Ajayostis%2Fcascade-sandbox+is%3Aissue+is%3Aopen&type=issues)** and **[good first issues](https://github.com/search?q=repo%3Ajayostis%2Fcascade-vocabulary+repo%3Ajayostis%2Fcascade-bridge-spec+repo%3Ajayostis%2Fcascade-bridge-rs+repo%3Ajayostis%2Fcascade-bridge-adapter-fhir-r4+repo%3Ajayostis%2Fcascade-bridge-adapter-ccda+repo%3Ajayostis%2Fcascade-reference-tables+repo%3Ajayostis%2Fcascade-runtime-js+repo%3Ajayostis%2Fcascade-starter-kit+repo%3Ajayostis%2Fcascade-sandbox+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues)**.
+- A term, a rule or a query is changed in **cascade-vocabulary**, with a decision note in `decisions/`.
+- A new source format is a new **adapter** repository: data only, checked by the Bridge specification's tests.
+- Every repository has a `CONTRIBUTING.md` in its root that says how to set it up, run its checks and open a pull request, for example [cascade-vocabulary's](https://github.com/jayostis/cascade-vocabulary/blob/main/CONTRIBUTING.md) and [cascade-runtime-js's](https://github.com/jayostis/cascade-runtime-js/blob/main/CONTRIBUTING.md).
+- Each repository's `CLAUDE.md` carries its rules, for a person and for a coding agent alike.
+- Never include real patient data in an issue, a pull request or a fixture.
+- Please follow the [code of conduct](https://github.com/the-cascade-protocol/.github/blob/main/CODE_OF_CONDUCT.md). To report a vulnerability, read the [security policy](https://github.com/the-cascade-protocol/.github/blob/main/SECURITY.md).
 
-- **[All open issues across the organization](https://github.com/search?q=org%3Athe-cascade-protocol+is%3Aissue+is%3Aopen&type=issues)** — everything currently on the list, in every repository.
-- **[Good first issues](https://github.com/search?q=org%3Athe-cascade-protocol+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues)** — scoped, self-contained, and a reasonable place to start.
+## Namespaces
 
-Vocabulary changes are the one thing that is not a single-repository change: an
-ontology is authored in [`spec`](https://github.com/the-cascade-protocol/spec) and
-propagates from there to the SDKs, the CLI, the conformance suite and the
-documentation site, in that order. If your change touches a vocabulary, read
-[`spec/CONTRIBUTING.md`](https://github.com/the-cascade-protocol/spec/blob/main/CONTRIBUTING.md)
-first — it carries the authoritative sequence.
+Terms have IRIs under `https://ns.cascadeprotocol.org/`: the vocabulary's under `cascade#`, the Bridge's under `bridge/v1-draft#`. These draft namespaces are not served yet; read the terms in [cascade-vocabulary's ontologies](https://github.com/jayostis/cascade-vocabulary/tree/main/ontologies) and [cascade-bridge-spec's vocab](https://github.com/jayostis/cascade-bridge-spec/tree/main/vocab).
 
-Issues and pull requests are the right place for questions about the protocol
-itself. Please do not include real patient data in either.
+## Deprecated
 
-## Links
+These were the protocol's first prototypes. They are no longer developed and are kept for reference.
 
-- [cascadeprotocol.org](https://cascadeprotocol.org) — Documentation & getting started guides
-- [CLI Guide](https://cascadeprotocol.org/docs/getting-started/cli/)
-- [Cascade Agent Guide](https://cascadeprotocol.org/docs/getting-started/agent/)
-- [Security & Compliance](https://cascadeprotocol.org/docs/security/)
+| Repository | Was | Replaced by |
+|---|---|---|
+| [spec](https://github.com/the-cascade-protocol/spec) | Ontologies, shapes, serialization and pod specifications | cascade-vocabulary and cascade-bridge-spec |
+| [conformance](https://github.com/the-cascade-protocol/conformance) | Conformance fixtures and a reference patient pod | cascade-vocabulary's conformance kits |
+| [cascade-cli](https://github.com/the-cascade-protocol/cascade-cli) | A command-line tool for pods, `@the-cascade-protocol/cli` | cascade-runtime-js and cascade-starter-kit |
+| [sdk-typescript](https://github.com/the-cascade-protocol/sdk-typescript) | A TypeScript SDK, `@the-cascade-protocol/sdk` | cascade-runtime-js |
+| [sdk-python](https://github.com/the-cascade-protocol/sdk-python) | A Python SDK, `cascade-protocol` on PyPI | none yet |
+| [cascade-agent](https://github.com/the-cascade-protocol/cascade-agent) | A natural-language interface to the old CLI, `@the-cascade-protocol/agent` | the chat and MCP add-ons of cascade-starter-kit |
 
-## License
+## Licence and trademarks
 
-Code repositories: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-Specification & documentation: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+Code is under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). Vocabulary terms copied from `spec` remain [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Each repository's `LICENSE` governs it.
 
-## Trademarks
-
-"Cascade Protocol" and the Cascade Protocol logo are trademarks of Cascade Agentic Labs LLC; the licenses above cover the code and the specification, not the name or logo. See the [trademark policy](https://cascadeprotocol.org/legal/trademarks.html) for how to refer to the protocol and what compatibility claims require.
+"Cascade Protocol" and its logo are trademarks of Cascade Agentic Labs LLC. The licences cover the code and the specifications, not the name or logo. See the [trademark policy](https://cascadeprotocol.org/legal/trademarks.html).
